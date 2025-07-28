@@ -3,7 +3,6 @@ numpy
 sqlalchemy
 cloudscraper
 beautifulsoup4
-cloudscraper
 fake-useragent
 python-dotenv
 psycopg2
