@@ -12,7 +12,6 @@ class Produto(Base):
     sku_marketplace = Column(String(50))
     marketplace_id = Column(Integer)
     
-    # Relacionamento com scraping
     scrapings = relationship("Scraping", back_populates="produto")
   
 

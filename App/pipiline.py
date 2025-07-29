@@ -7,13 +7,11 @@ import random
 from decimal import Decimal
 import psycopg2
 
-# Supondo que estes módulos existam no ambiente de execução
 from models import *
 from database import SessionLocal
 from scraping_simplicado import run, delay
 
 # Configuração do logging para escrever em um arquivo
-# O arquivo se chamará 'scraping_vm.log' e será criado no mesmo diretório do script.
 # O modo 'a' significa 'append', então os logs de execuções diferentes serão adicionados ao final do arquivo.
 logging.basicConfig(
     level=logging.INFO,
@@ -134,7 +132,6 @@ def processar_todos_produtos(db: Session):
         )
     else:
         logging.info("Iniciando nova execução de scraping.")
-        # Se for uma nova execução, a query base já está correta.
         query_final = query_base
 
     # 5. Aplica o limite e executa a query para buscar os produtos a serem processados.
@@ -193,7 +190,6 @@ def processar_todos_produtos(db: Session):
                     casos_erros += 1
                     logging.error(f"Erro inesperado ao processar o produto ID {produto.id}: {str(e)}", exc_info=True)
 
-                # Pausa entre requisições para evitar bloqueios
                 time.sleep(random.uniform(5, 10)) 
 
             # Pausa maior entre os blocos
@@ -219,7 +215,7 @@ def processar_todos_produtos(db: Session):
         
         # Decide o status final: 'finalizado' se todos os produtos da busca foram processados,
         # 'interrompido' caso contrário (indicando que há mais produtos a buscar na próxima execução).
-        if total_a_processar_nesta_execucao < LIMITE_DA_BUSCA:
+        if total_a_processar_nesta_execucao >= LIMITE_DA_BUSCA:
              historico.status = "finalizado"
         else:
              historico.status = "interrompido" 
