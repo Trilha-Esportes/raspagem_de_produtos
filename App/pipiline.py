@@ -91,8 +91,8 @@ def processar_todos_produtos(db: Session):
     logging.info("======================================================================")
     
    
-    TAMANHO_BLOCO = 30
-    LIMITE_DA_BUSCA = 250
+    TAMANHO_BLOCO = 10
+    LIMITE_DA_BUSCA = 100
 
     # 1. Subconsulta para encontrar a data da última pesquisa de cada produto.
     subquery_ultimos_produtos = (
@@ -192,7 +192,6 @@ def processar_todos_produtos(db: Session):
 
                 time.sleep(random.uniform(5, 10)) 
 
-            # Pausa maior entre os blocos
             if i + TAMANHO_BLOCO < total_a_processar_nesta_execucao:
                 delay_bloco = random.uniform(10, 25)
                 logging.info(f"Fim do bloco. Aguardando {delay_bloco:.1f} segundos...")
@@ -214,7 +213,6 @@ def processar_todos_produtos(db: Session):
         historico.numero_erros = (historico.numero_erros or 0) + casos_erros
         
         # Decide o status final: 'finalizado' se todos os produtos da busca foram processados,
-        # 'interrompido' caso contrário (indicando que há mais produtos a buscar na próxima execução).
         if total_a_processar_nesta_execucao >= LIMITE_DA_BUSCA:
              historico.status = "finalizado"
         else:

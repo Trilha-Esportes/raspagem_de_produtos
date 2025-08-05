@@ -42,7 +42,7 @@ def get_html(url):
 
 
     try:
-        response = scraper.get(url, headers=headers, timeout=15)
+        response = scraper.get(url, headers=headers, timeout=50)
         response.raise_for_status()
 
         # Verificação adicional contra bloqueios disfarçados
